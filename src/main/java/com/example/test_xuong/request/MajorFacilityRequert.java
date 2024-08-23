@@ -30,8 +30,6 @@ public class MajorFacilityRequert {
 
 //    private String nameDepartment;
 //    private String nameFacility;
-//
-//
 //    private String nameMajor;
     private Short status;
 }
