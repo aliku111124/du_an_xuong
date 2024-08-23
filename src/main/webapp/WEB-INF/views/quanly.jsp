@@ -62,18 +62,18 @@
                                 <div class="modal-body">
                                     <form:form action="/nhan-vien/addBMCN" method="post" modelAttribute="majorFacility">
                                         Cơ Sở
-                                        <form:select onchange="this.form.submit()" path="id" class="form-control">
+                                        <form:select path="id" class="form-control">
                                             <form:options items="${listCoSo}" itemLabel="name" itemValue="id"></form:options>
                                         </form:select>
                                         <br>
                                         Bộ Môn
-                                        <form:select onchange="this.form.submit()" path="id" class="form-control">
+                                        <form:select path="id" class="form-control">
                                             <option hidden value="">---Chọn Bộ Môn---</option>
                                             <form:options items="${listDepartment}" itemLabel="name" itemValue="id"></form:options>
                                         </form:select>
                                         <br>
                                         Chuyên Ngành
-                                        <form:select onchange="this.form.submit()" path="idMajor" class="form-control">
+                                        <form:select  path="idMajor" class="form-control">
                                             <option hidden value="">---Chọn Chuyên Ngành---</option>
                                             <form:options items="${listMajor}" itemLabel="name" itemValue="id"></form:options>
                                         </form:select>

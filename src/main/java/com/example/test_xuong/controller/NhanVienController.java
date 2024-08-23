@@ -89,7 +89,7 @@ public class NhanVienController {
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute("staff") @Valid NhanVienRequert nVrequert,Model model, BindingResult result) {
+    public String add(@ModelAttribute("staff") @Valid NhanVienRequert nVrequert, BindingResult result ,Model model) {
         if (result.hasErrors()) {
             return "add";
         }
