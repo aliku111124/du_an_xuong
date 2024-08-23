@@ -36,7 +36,7 @@
             <br>
             <hr>
             <button type="submit" style="background: black ; color: white; margin: 5px ; border-radius: 20px; width: 50px;height: 40px">lưu</button>
-            <button style="background: black ; color: white; margin: 5px ; border-radius: 20px; width: 100px;height: 40px"><a href="/nhan-vien/hien-thi" style="text-decoration: none">quay lại</a></button>
+            <button style="background: black ; color: white; margin: 5px ; border-radius: 20px; width: 100px;height: 40px"><a href="/nhan-vien/hien-thi" style="text-decoration: none;color: white">quay lại</a></button>
         </form:form>
     </div>
 </div>

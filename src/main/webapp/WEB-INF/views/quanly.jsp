@@ -62,18 +62,18 @@
                                 <div class="modal-body">
                                     <form:form action="/nhan-vien/addBMCN" method="post" modelAttribute="majorFacility">
                                         Cơ Sở
-                                        <form:select path="id" class="form-control">
+                                        <form:select onchange="this.form.submit()" path="id" class="form-control">
                                             <form:options items="${listCoSo}" itemLabel="name" itemValue="id"></form:options>
                                         </form:select>
                                         <br>
                                         Bộ Môn
-                                        <form:select path="id" class="form-control">
+                                        <form:select onchange="this.form.submit()" path="id" class="form-control">
                                             <option hidden value="">---Chọn Bộ Môn---</option>
                                             <form:options items="${listDepartment}" itemLabel="name" itemValue="id"></form:options>
                                         </form:select>
                                         <br>
                                         Chuyên Ngành
-                                        <form:select path="idMajor" class="form-control">
+                                        <form:select onchange="this.form.submit()" path="idMajor" class="form-control">
                                             <option hidden value="">---Chọn Chuyên Ngành---</option>
                                             <form:options items="${listMajor}" itemLabel="name" itemValue="id"></form:options>
                                         </form:select>
@@ -105,16 +105,16 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${listStaffMajorFacility}" var="nv">
+                <c:forEach items="${listStaffMajorFacility}" var="nv" varStatus="stt">
                     <tr>
-                        <td>1</td>
+                        <td>${stt.index+1}</td>
                         <td>${nv.nameFacility}</td>
                         <td>${nv.nameDepartment}</td>
                         <td>${nv.nameMajor}</td>
                         <td>
 <%--                            <button><a href="/nhan-vien/delete?id=${nv.id}">delete</a>--%>
                             <%--                            </button>--%>
-                    <button style="background: #b995dc; border-radius: 10px"><a href="/nhan-vien/delete/${nv.id}" style="color: white; text-decoration: none">delete</a></button>
+                    <button style="background: #b995dc; border-radius: 10px ; border: 1px #b995dc"><a href="/nhan-vien/delete/${nv.id}" style="color: white; text-decoration: none">delete</a></button>
 
                         </td>
 

@@ -31,9 +31,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 
 @Controller
 @RequestMapping("/nhan-vien")
@@ -86,7 +89,7 @@ public class NhanVienController {
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute("staff") @Valid NhanVienRequert nVrequert, BindingResult result) {
+    public String add(@ModelAttribute("staff") @Valid NhanVienRequert nVrequert,Model model, BindingResult result) {
         if (result.hasErrors()) {
             return "add";
         }
@@ -96,6 +99,31 @@ public class NhanVienController {
         staff.setAccountFpt(nVrequert.getAccountFpt().trim().replaceAll(" ",""));
         staff.setAccountFe(nVrequert.getAccountFe().trim().replaceAll(" ",""));
         staff.setStatus(Short.valueOf("1"));
+        // Kiểm tra logic nghiệp vụ (mã nhân viên hoặc email đã tồn tại)
+        List<Staff> allStaff = staffRepository.findAll();
+        boolean hasErrors = false;
+
+        for (Staff existingStaff : allStaff) {
+            if (existingStaff.getStaffCode().equals(staff.getStaffCode())) {
+                model.addAttribute("staffCode", "Mã nhân viên đã tồn tại.");
+                hasErrors = true;
+                break;
+            }
+            if (existingStaff.getAccountFpt().equals(staff.getAccountFpt())) {
+                model.addAttribute("accountFpt", "Email FPT đã tồn tại.");
+                hasErrors = true;
+                break;
+            }
+            if (existingStaff.getAccountFe().equals(staff.getAccountFe())) {
+                model.addAttribute("accountFe", "Email FE đã tồn tại.");
+                hasErrors = true;
+                break;
+            }
+        }
+        if (hasErrors) {
+            model.addAttribute("employee", staff);
+            return "add";  // Trở lại trang biểu mẫu với thông báo lỗi
+        }
         nhanVienRepository.save(staff);
         return "redirect:/nhan-vien/hien-thi";
     }
@@ -128,11 +156,16 @@ public class NhanVienController {
         }
     }
 
+    UUID getIdStaff;
+
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") UUID id, Model model) {
         Optional<Staff> staffOptional = nhanVienRepository.findById(id);
+
         if (staffOptional.isPresent()) {
+
             Staff staff = staffOptional.get();
+            getIdStaff = staff.getId();
             model.addAttribute("staff", staff);
             model.addAttribute("listNhanVien", nhanVienRepository.getAll());
             model.addAttribute("listCoSo", coSoRepository.findAll());
@@ -226,7 +259,7 @@ public class NhanVienController {
             e.printStackTrace();
             return "redirect:/error";
         }
-        return "redirect:/nhan-vien/detail/"+id.toString();
+        return "redirect:/nhan-vien/detail/"+getIdStaff.toString();
     }
 
 
@@ -301,13 +334,30 @@ public class NhanVienController {
     }
 
     @PostMapping("/import-staff")
-    public String importStaff(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+    public String importStaff(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, Model model) {
         try {
             excelService.importStaffFromExcel(file);
+            // Ghi lại thời gian hiện tại
+            String currentTime = getCurrentTime();
+
+            // Ghi lại tên file
+            String fileName = file.getOriginalFilename();
+
+            System.out.println(currentTime);
+            System.out.println(fileName);
+            model.addAttribute("thoigian",currentTime);
+            model.addAttribute("noidung",fileName);
+            model.addAttribute("listNhanVien", nhanVienRepository.getAll());
+            model.addAttribute("staff" , new Staff());
             redirectAttributes.addFlashAttribute("message", "Import thành công!");
         } catch (IOException e) {
             redirectAttributes.addFlashAttribute("message", "Import thất bại! Vui lòng thử lại.");
         }
         return "redirect:/nhan-vien/hien-thi";
+    }
+
+    private static String getCurrentTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(new Date());
     }
 }

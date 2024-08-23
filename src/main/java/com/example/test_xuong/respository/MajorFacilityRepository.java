@@ -1,5 +1,6 @@
 package com.example.test_xuong.respository;
 
+import com.example.test_xuong.entity.Department;
 import com.example.test_xuong.entity.MajorFacility;
 import com.example.test_xuong.respon.MajorFacilityRespon;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -41,4 +42,10 @@ public interface MajorFacilityRepository extends JpaRepository<MajorFacility, UU
     
 """)
     List<MajorFacilityRespon> getAllMajorFacilityRespon();
+
+//    @Query("""
+//        select department  from Department department
+//        where department.
+//""")
+//    List<Department> getAllByIdFacility();
 }

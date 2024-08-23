@@ -35,20 +35,62 @@
                                 <h1>Import Staff</h1>
                                 <form method="POST" enctype="multipart/form-data" action="/nhan-vien/import-staff">
                                     <input type="file" name="file" accept=".xlsx">
-                                    <button type="submit">Upload</button>
+                                    <button type="submit" style="border-radius: 10px;border: 1px solid red ; background: red ; color: white">Upload</button>
                                 </form>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
-                            </div>
+
                         </div>
                     </div>
                 </div>
 <%--                --------------------------------------------------------------%>
                 <button style="background: black ; color: white; margin: 5px ; border-radius: 20px; width: 200px;height: 50px"><a href="/nhan-vien/download/excel-template" style="text-decoration: none; color: white">Download Template</a></button>
                 <button style="background: black ; margin: 5px ; border-radius: 20px; width: 200px;height: 50px"><a href="/nhan-vien/viewAdd" style="text-decoration: none; color: white">Thêm Nhân Viên</a></button>
-                <button style="background: black ; color: white; margin: 5px ; border-radius: 20px; width: 200px;height: 50px">Xem lịch sử Import</button>
+<%--                <button style="background: black ; color: white; margin: 5px ; border-radius: 20px; width: 200px;height: 50px">Xem lịch sử Import</button>--%>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="background: black ; color: white; margin: 5px ; border-radius: 20px; width: 200px;height: 50px">
+        Xem lịch sử Import
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Ngày Tạo</th>
+                            <th>Nội Dung</th>
+                            <th>Đường dẫn</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${listNhanVien}" var="nv" varStatus="stt">
+                            <tr>
+                                <td>${stt.index+1}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
             </div>
         </div>
         <table class="table table-bordered">
@@ -64,18 +106,18 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${listNhanVien}" var="nv">
+            <c:forEach items="${listNhanVien}" var="nv" varStatus="stt">
                 <tr>
-                    <td>1</td>
+                    <td>${stt.index+1}</td>
                     <td>${nv.staffCode}</td>
                     <td>${nv.name}</td>
                     <td>${nv.accountFpt}</td>
                     <td>${nv.accountFe}</td>
                     <td>${nv.status == 1 ? "Đang Hoạt Động" : "Ngừng Hoạt Động"}</td>
                     <td>
-                        <button><a href="/nhan-vien/viewUpdate/${nv.id}">ud</a></button>
-                        <button><a href="/nhan-vien/setStatus/${nv.id}">tt</a></button>
-                        <button><a href="/nhan-vien/detail/${nv.id}">dt</a></button>
+                        <button style="background: #d91818;border-radius: 10px ; border: 1px #d91818"><a href="/nhan-vien/viewUpdate/${nv.id}" style="color: white;text-decoration: none ">update</a></button>
+                        <button  style="background: #259bc2;border-radius: 10px ; border: 1px #259bc2"><a href="/nhan-vien/setStatus/${nv.id}" style="color: white;text-decoration: none ">đổi trạng thái</a></button>
+                        <button style="background: #ded325;border-radius: 10px; border: 1px #ded325 "><a href="/nhan-vien/detail/${nv.id}" style="color: white;text-decoration: none ">detail</a></button>
                     </td>
                 </tr>
             </c:forEach>
